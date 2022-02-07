@@ -7,6 +7,8 @@
  * 要改变这种模板请点击 工具|选项|代码编写|编辑标准头文件
  */
 using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace RandomSelect
 {
@@ -20,5 +22,8 @@ namespace RandomSelect
 		public static int notemp=0;
 		
 		public static int interval=10;
+        public static string[] namestxt_list_path;
+        public static string[] namestxt_list;
+        public static Dictionary<string, string> txtmap;
 	}
 }

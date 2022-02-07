@@ -23,10 +23,15 @@ namespace RandomSelect
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
+            this.StartPosition = FormStartPosition.CenterScreen;
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
 		}
+
+        private void About_Load(object sender, EventArgs e)
+        {
+
+        }
 	}
 }

@@ -27,7 +27,8 @@ namespace RandomSelect
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.AcceptButton = button1;
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
@@ -48,33 +49,96 @@ namespace RandomSelect
 			timer1.Interval=dataset.interval;
 				button2.Enabled=!button2.Enabled;
 				timer1.Enabled=!timer1.Enabled;
-            label1.Text = "limingrui";
+                comboBox1.Enabled = !comboBox1.Enabled;
 			
 		}
 		public static List<string> getNameList(string Path)
         {
             List<string> nameList = new List<string>();
-            StreamReader sr = new StreamReader(Path, Encoding.Default);
+            try { StreamReader sr = new StreamReader(Path, Encoding.Default); 
+            
             string content;
             while ((content = sr.ReadLine()) != null)
             {
                 nameList.Add(content);
                 //Console.WriteLine(content.ToString());
+            }}
+            catch (Exception) {
+                Application.Restart();
             }
-
             return nameList;
         }
 		
 		void MainFormLoad(object sender, EventArgs e)
 		{
+            
 			label1.Text="";
 			timer1.Enabled=false;
 			//timer1.Interval=dataset.interval;
 			//if(!File.Exists("name.txt")){File.Create("name.txt");}
-			 List<string>nameList = new List<string>();
-			 nameList=getNameList("name.txt");
-			 toolStripStatusLabel1.Text="成功导入姓名"+nameList.Count+"个";
-			 dataset.namelist=nameList.ToArray();
+
+			 //List<string>nameList = new List<string>();
+			 //nameList=getNameList("name.txt");
+			 //toolStripStatusLabel1.Text="成功导入姓名"+nameList.Count+"个";
+			 //dataset.namelist=nameList.ToArray();
+
+            if (!Directory.Exists("data"))
+            {
+                try
+                {
+                    Directory.CreateDirectory("data");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("data文件夹创建失败", "Error");
+                    Environment.Exit(0);
+                }
+
+                try
+                {
+                    File.Create("data/default.txt");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("default文件创建失败", "Error");
+                    Environment.Exit(0);
+                }
+            }
+            if (!(Directory.GetDirectories("data").Length > 0 || Directory.GetFiles("data").Length > 0))
+            {
+                try
+                {
+                    File.Create("data/default.txt");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("default文件创建失败", "Error");
+                    Environment.Exit(0);
+                }
+            }
+            DirectoryInfo dict_info = new DirectoryInfo("data");
+            FileSystemInfo[] fsinfos = dict_info.GetFileSystemInfos();
+            Dictionary<string, string> nametxt_nametxtpath = new Dictionary<string, string>();
+            List<string> name_t = new List<string>();
+            foreach (FileSystemInfo fsinfo in fsinfos) 
+            {
+                name_t.Add(fsinfo.Name);
+                nametxt_nametxtpath.Add(fsinfo.Name, fsinfo.FullName);
+                
+            }
+            dataset.txtmap = nametxt_nametxtpath;
+            dataset.namestxt_list = name_t.ToArray();
+            foreach(string i in dataset.namestxt_list){
+                comboBox1.Items.Add(i);
+            } 
+            comboBox1.SelectedText=dataset.namestxt_list[0];
+            List<string> nameList = new List<string>();
+            nameList = getNameList(dataset.txtmap[comboBox1.Text]);
+            toolStripStatusLabel1.Text = "成功导入姓名" + nameList.Count + "个";
+            dataset.namelist = nameList.ToArray();
+
+
+
 		}
 		void Timer1Tick(object sender, EventArgs e)
 		{
@@ -89,10 +153,17 @@ namespace RandomSelect
 		}
 		void Button2Click(object sender, EventArgs e)
 		{
-			Random rd=new Random();
-			int i=rd.Next(99,65533);
-			int j=i%(dataset.namelist.Length);
-			label1.Text=dataset.namelist[j];
+            try
+            {
+                Random rd = new Random();
+                int i = rd.Next(99, 65533);
+                int j = i % (dataset.namelist.Length);
+                label1.Text = dataset.namelist[j];
+            }
+            catch (DivideByZeroException)
+            {
+                MessageBox.Show("当前文件中没有内容，发生除0异常");
+            }
 		}
 		void 关于本程序ToolStripMenuItemClick(object sender, EventArgs e)
 		{
@@ -106,5 +177,24 @@ namespace RandomSelect
 		{
 			new Form1().Show();
 		}
+
+        private void 数据管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new DataManager().Show();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<string>nameList = new List<string>();
+            nameList=getNameList(dataset.txtmap[comboBox1.Text]);
+            toolStripStatusLabel1.Text="成功导入姓名"+nameList.Count+"个";
+            dataset.namelist = nameList.ToArray();
+            
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
 	}
 }

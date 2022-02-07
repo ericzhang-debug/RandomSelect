@@ -15,6 +15,10 @@ namespace RandomSelect
 	/// <summary>
 	/// Description of Form1.
 	/// </summary>
+    /// 
+
+
+
 	public partial class Form1 : Form
 	{
 		public Form1()
@@ -23,7 +27,8 @@ namespace RandomSelect
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.AcceptButton = button1;
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
@@ -37,5 +42,10 @@ namespace RandomSelect
 			this.Close();
 			
 		}
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            textBox1.Text = dataset.interval.ToString();
+        }
 	}
 }

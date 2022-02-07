@@ -3,6 +3,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 #endregion
 
@@ -12,10 +13,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("RandomSelect")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Eric")]
 [assembly: AssemblyProduct("RandomSelect")]
 [assembly: AssemblyCopyright("Copyright 2022")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Eric")]
 [assembly: AssemblyCulture("")]
 
 // This sets the default COM visibility of types in the assembly to invisible.
@@ -28,4 +29,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("0.1.0.7")]
+[assembly: AssemblyFileVersionAttribute("0.1.0.7")]
+[assembly: NeutralResourcesLanguageAttribute("zh-CN")]
